@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Monchi Barber</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --black:#0a0a0a;--dark:#111;--card:#1a1a1a;--border:#2a2a2a;
+  --gold:#c8a96e;--white:#f5f0e8;--gray:#888;
+  --green:#4caf7d;--red:#c0392b;
+  --font:'Georgia',serif;--sans:'Helvetica Neue',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:var(--sans);}
+
+nav{position:fixed;top:0;width:100%;z-index:200;padding:1.1rem 2.5rem;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,10,0.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.logo{font-family:var(--font);font-size:1.3rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;cursor:pointer;}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center;}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;transition:color .3s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-turno{padding:.5rem 1.2rem;border:1px solid var(--gold);color:var(--gold);font-size:.68rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;background:transparent;transition:all .3s;}
+.nav-turno:hover{background:var(--gold);color:var(--black);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.3rem;}
+.hamburger span{display:block;width:22px;height:1px;background:var(--gray);}
+@media(max-width:680px){
+  .nav-links{display:none;}.nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;width:100%;background:rgba(10,10,10,.97);padding:1.5rem 2rem;gap:1.2rem;border-bottom:1px solid var(--border);}
+  .hamburger{display:flex;}nav{padding:1rem 1.5rem;}
+}
+
+#inicio{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden;padding:2rem;}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0a0a0a 0%,#1a1208 50%,#0a0a0a 100%);}
+.hero-lines{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(200,169,110,.03) 60px,rgba(200,169,110,.03) 61px),repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(200,169,110,.03) 60px,rgba(200,169,110,.03) 61px);}
+.hero-content{position:relative;z-index:2;}
+.hero-tag{font-size:.65rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;}
+h1.main-title{font-family:var(--font);font-size:clamp(3.5rem,10vw,7.5rem);font-weight:400;letter-spacing:8px;text-transform:uppercase;line-height:1;color:var(--white);margin-bottom:.4rem;}
+.hero-sub{font-size:.7rem;letter-spacing:6px;text-transform:uppercase;color:var(--gray);margin-bottom:3rem;}
+.btn-gold{display:inline-block;padding:.85rem 2.5rem;border:1px solid var(--gold);color:var(--gold);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;background:transparent;transition:all .3s;}
+.btn-gold:hover{background:var(--gold);color:var(--black);}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--gray);font-size:.6rem;letter-spacing:3px;text-transform:uppercase;}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);}
+
+section{padding:6rem 2.5rem;}
+.section-label{font-size:.62rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;}
+.section-title{font-family:var(--font);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:400;letter-spacing:3px;text-transform:uppercase;margin-bottom:.8rem;}
+.section-line{width:50px;height:1px;background:var(--gold);margin-bottom:2.5rem;}
+.centered{text-align:center;}.centered .section-line{margin:0 auto 2.5rem;}
+
+#sobre{background:var(--dark);}
+.sobre-grid{max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:start;}
+.deco-num{font-family:var(--font);font-size:5rem;color:rgba(200,169,110,.12);line-height:1;}
+.deco-tag{font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-top:.5rem;}
+.sobre-text p{color:var(--gray);font-size:.93rem;line-height:1.9;margin-bottom:1rem;}
+@media(max-width:600px){.sobre-grid{grid-template-columns:1fr;gap:1.5rem;}}
+
+#trabajos{background:var(--black);}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);max-width:1050px;margin:0 auto 2rem;}
+.gallery-item{background:var(--dark);aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;}
+.gallery-item .overlay{position:absolute;inset:0;background:rgba(200,169,110,.82);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;}
+.gallery-item:hover .overlay{opacity:1;}
+.overlay span{font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--black);}
+
+#turnos{background:var(--dark);padding:6rem 2.5rem;}
+.turnos-wrap{max-width:700px;margin:0 auto;}
+.steps-bar{display:flex;border:1px solid var(--border);margin-bottom:2.5rem;}
+.stp{flex:1;padding:.7rem;text-align:center;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);border-right:1px solid var(--border);transition:all .3s;}
+.stp:last-child{border-right:none;}.stp.active{color:var(--gold);background:rgba(200,169,110,.06);}.stp.done{color:var(--green);}
+.stp-num{display:block;font-size:.52rem;margin-bottom:.15rem;opacity:.7;}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.cal-month-title{font-family:var(--font);font-size:1.2rem;letter-spacing:2px;text-transform:uppercase;}
+.cal-nav{background:none;border:1px solid var(--border);color:var(--gray);width:34px;height:34px;cursor:pointer;font-size:.9rem;transition:all .3s;display:flex;align-items:center;justify-content:center;}
+.cal-nav:hover{border-color:var(--gold);color:var(--gold);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-dow{text-align:center;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);padding:.4rem 0;}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:.82rem;cursor:pointer;border:1px solid transparent;transition:all .22s;position:relative;}
+.cal-day:hover:not(.empty):not(.past){border-color:var(--gold);color:var(--gold);}
+.cal-day.empty,.cal-day.past{cursor:default;color:#2f2f2f;}
+.cal-day.today{color:var(--gold);}
+.cal-day.today::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:3px;height:3px;border-radius:50%;background:var(--gold);}
+.cal-day.selected{background:var(--gold);color:var(--black) !important;border-color:var(--gold);}
+.cal-day.has-slots::before{content:'';position:absolute;top:3px;right:3px;width:4px;height:4px;border-radius:50%;background:var(--green);opacity:.8;}
+.slots-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
+.slots-date{font-family:var(--font);font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;}
+.btn-back{background:none;border:1px solid var(--border);color:var(--gray);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;padding:.5rem 1rem;transition:all .3s;}
+.btn-back:hover{border-color:var(--gray);color:var(--white);}
+.slots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;margin-bottom:2rem;}
+.slot{padding:.65rem;text-align:center;border:1px solid var(--border);cursor:pointer;font-size:.82rem;transition:all .22s;}
+.slot:hover:not(.taken){border-color:var(--gold);color:var(--gold);}
+.slot.taken{color:#2f2f2f;border-color:#1a1a1a;cursor:not-allowed;}
+.slot.taken::after{content:'ocupado';display:block;font-size:.5rem;letter-spacing:1px;text-transform:uppercase;color:#333;margin-top:.2rem;}
+.slot.selected{background:var(--gold);color:var(--black);border-color:var(--gold);}
+.resumen-box{border:1px solid var(--border);border-top:2px solid var(--gold);padding:1.25rem;margin-bottom:1.5rem;}
+.res-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;font-size:.82rem;}
+.res-row:last-child{margin:0;}.res-k{color:var(--gray);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;}
+.form-label{display:block;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+.form-input{width:100%;background:var(--black);border:1px solid var(--border);color:var(--white);padding:.75rem 1rem;font-family:var(--sans);font-size:.92rem;margin-bottom:1.5rem;transition:border .25s;}
+.form-input:focus{outline:none;border-color:var(--gold);}
+.btn-full{width:100%;padding:.85rem;border:1px solid var(--gold);color:var(--gold);font-size:.7rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;background:transparent;transition:all .3s;}
+.btn-full:hover:not(:disabled){background:var(--gold);color:var(--black);}
+.btn-full:disabled{opacity:.3;cursor:not-allowed;}
+.success-wrap{text-align:center;padding:2.5rem 1rem;}
+.success-icon{width:56px;height:56px;border-radius:50%;border:1px solid var(--green);margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;color:var(--green);font-size:1.3rem;}
+.success-title{font-family:var(--font);font-size:1.4rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:.4rem;}
+.success-sub{color:var(--gray);font-size:.85rem;margin-bottom:1.5rem;}
+.success-detail{background:var(--black);padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;border:1px solid var(--border);}
+.success-detail p{font-size:.78rem;color:var(--gray);margin-bottom:.4rem;}
+.success-detail strong{color:var(--white);}
+
+#contacto{background:var(--black);}
+.contact-card{max-width:560px;margin:0 auto;border:1px solid var(--border);padding:2.5rem;position:relative;}
+.contact-card::before{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:50px;height:2px;background:var(--gold);}
+.contact-item{margin-bottom:1.5rem;}
+.contact-label{font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;}
+.contact-value{font-size:1rem;color:var(--white);letter-spacing:.5px;}
+.sep{width:1px;height:30px;background:var(--border);margin:1.5rem auto;}
+.ig-link{display:inline-flex;align-items:center;gap:.6rem;padding:.7rem 1.5rem;border:1px solid var(--border);color:var(--gray);text-decoration:none;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;transition:all .3s;}
+.ig-link:hover{border-color:var(--gold);color:var(--gold);}
+
+footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-logo{font-family:var(--font);font-size:1rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+.footer-copy{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);}
+
+/* IMG MODAL */
+.img-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:300;flex-direction:column;align-items:center;justify-content:center;gap:1rem;}
+.img-modal.open{display:flex;}
+.img-modal img{max-width:88vw;max-height:75vh;object-fit:contain;border:1px solid var(--border);}
+.img-modal-close{position:absolute;top:1.2rem;right:1.5rem;color:var(--gray);font-size:1.3rem;cursor:pointer;background:none;border:none;}
+
+/* ADMIN */
+.admin-btn{position:fixed;bottom:1.5rem;right:1.5rem;padding:.55rem 1.1rem;border:1px solid var(--border);color:var(--gray);background:var(--dark);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;z-index:150;transition:all .3s;}
+.admin-btn:hover{border-color:var(--gold);color:var(--gold);}
+.admin-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:250;overflow-y:auto;padding:2rem;}
+.admin-panel.open{display:block;}
+.admin-inner{max-width:750px;margin:0 auto;}
+.admin-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+.admin-head-title{font-family:var(--font);font-size:1.1rem;letter-spacing:2px;color:var(--gold);}
+.admin-close-btn{background:none;border:none;color:var(--gray);font-size:1.2rem;cursor:pointer;}
+.booking-card{background:var(--card);border:1px solid var(--border);padding:.9rem 1.1rem;margin-bottom:.6rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;}
+.booking-card strong{display:block;font-size:.9rem;color:var(--white);margin-bottom:.2rem;}
+.booking-card p{font-size:.75rem;color:var(--gray);}
+.booking-cancel{background:none;border:1px solid var(--border);color:var(--gray);padding:.35rem .7rem;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+.booking-cancel:hover{border-color:var(--red);color:var(--red);}
+.empty-msg{text-align:center;padding:3rem;color:var(--gray);font-size:.72rem;letter-spacing:2px;text-transform:uppercase;}
+
+/* WA BUTTON */
+.wa-btn{position:fixed;bottom:1.5rem;left:1.5rem;width:52px;height:52px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;z-index:150;box-shadow:0 2px 12px rgba(37,211,102,.3);transition:transform .3s;}
+.wa-btn:hover{transform:scale(1.08);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo" onclick="scrollTo(0,0)">Monchi Barber</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#sobre" onclick="closeMenu()">Nosotros</a></li>
+    <li><a href="#trabajos" onclick="closeMenu()">Trabajos</a></li>
+    <li><a href="#contacto" onclick="closeMenu()">Contacto</a></li>
+    <li><button class="nav-turno" onclick="document.getElementById('turnos').scrollIntoView({behavior:'smooth'});closeMenu()">Sacar turno</button></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<section id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <p class="hero-tag">Est. Pascanas, Córdoba</p>
+    <h1 class="main-title">Monchi<br>Barber</h1>
+    <p class="hero-sub">Arte · Estilo · Precisión</p>
+    <button class="btn-gold" onclick="document.getElementById('turnos').scrollIntoView({behavior:'smooth'})">Sacar turno</button>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
+</section>
+
+<section id="sobre">
+  <div class="sobre-grid">
+    <div><div class="deco-num">01</div><div class="deco-tag">Nosotros</div></div>
+    <div>
+      <p class="section-label">Quiénes somos</p>
+      <h2 class="section-title">La esencia<br>del barbero</h2>
+      <div class="section-line"></div>
+      <div class="sobre-text">
+        <p id="sobre-p1">Somos más que una barbería. Somos un espacio donde el detalle importa, donde cada corte es una expresión de identidad. En Monchi Barber combinamos técnica, pasión y estilo propio para que salgas sintiéndote único.</p>
+        <p id="sobre-p2">Atendemos con dedicación, sin apuros. Porque un buen corte merece tiempo y precisión.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trabajos">
+  <div class="centered" style="margin-bottom:2.5rem;">
+    <p class="section-label">Portfolio</p>
+    <h2 class="section-title">Trabajos realizados</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="gallery-grid" id="gallery"></div>
+</section>
+
+<section id="turnos">
+  <div class="turnos-wrap">
+    <div class="centered" style="margin-bottom:2.5rem;">
+      <p class="section-label">Reservas</p>
+      <h2 class="section-title">Sacar turno</h2>
+      <div class="section-line"></div>
+    </div>
+    <div id="turnosApp"></div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="centered" style="margin-bottom:2.5rem;">
+    <p class="section-label">Ubicación</p>
+    <h2 class="section-title">Encontranos</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-card">
+    <div class="contact-item">
+      <p class="contact-label">Dirección</p>
+      <p class="contact-value">Pascanas, Córdoba, Argentina</p>
+    </div>
+    <div class="sep"></div>
+    <div class="contact-item">
+      <p class="contact-label">Teléfono / WhatsApp</p>
+      <p class="contact-value">+54 9 370 518-5914</p>
+    </div>
+    <div class="sep"></div>
+    <div class="contact-item">
+      <p class="contact-label">Horarios</p>
+      <p class="contact-value">Lun – Sáb: 9:00 – 20:00</p>
+    </div>
+    <div class="sep"></div>
+    <div style="text-align:center;">
+      <a href="https://www.instagram.com/monchi_barber" target="_blank" class="ig-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        @monchi_barber
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Monchi Barber</div>
+  <p class="footer-copy">Pascanas · Córdoba · Argentina</p>
+</footer>
+
+<!-- WhatsApp flotante -->
+<a class="wa-btn" href="https://wa.me/543705185914" target="_blank" title="WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- IMG MODAL -->
+<div class="img-modal" id="imgModal">
+  <button class="img-modal-close" onclick="document.getElementById('imgModal').classList.remove('open')">✕</button>
+  <img id="modalImgEl" src="" alt="trabajo"/>
+</div>
+
+<!-- ADMIN -->
+<button class="admin-btn" onclick="openAdmin()">⚙ Admin</button>
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-inner">
+    <div class="admin-head">
+      <span class="admin-head-title">Turnos Reservados</span>
+      <button class="admin-close-btn" onclick="closeAdmin()">✕</button>
+    </div>
+    <div id="adminList"></div>
+  </div>
+</div>
+
+<script>
+// NAV
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');}
+function closeMenu(){document.getElementById('navLinks').classList.remove('open');}
+
+// GALLERY — fotos reales precargadas como URLs externas
+const INITIAL_PHOTOS = [
+  'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80',
+  'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&q=80',
+  'https://images.unsplash.com/photo-1621605815971-f9f8c2a6e49a?w=600&q=80',
+  'https://images.unsplash.com/photo-1583864697784-a0efc8379f70?w=600&q=80',
+  'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80',
+  'https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=600&q=80'
+];
+
+// Guardamos las fotos subidas por el usuario (en base64) aparte
+let userPhotos = [];
+try{const s=localStorage.getItem('mb_photos');if(s)userPhotos=JSON.parse(s);}catch(e){}
+
+function allPhotos(){return [...INITIAL_PHOTOS,...userPhotos];}
+
+function buildGallery(){
+  const g=document.getElementById('gallery');
+  g.innerHTML='';
+  allPhotos().forEach(function(src,idx){
+    const el=document.createElement('div');
+    el.className='gallery-item';
+    const img=document.createElement('img');
+    img.src=src;img.alt='trabajo';
+    const ov=document.createElement('div');ov.className='overlay';
+    ov.innerHTML='<span>Ver</span>';
+    el.appendChild(img);el.appendChild(ov);
+    el.onclick=function(){
+      document.getElementById('modalImgEl').src=src;
+      document.getElementById('imgModal').classList.add('open');
+    };
+    g.appendChild(el);
+  });
+}
+buildGallery();
+document.addEventListener('keydown',function(e){if(e.key==='Escape')document.getElementById('imgModal').classList.remove('open');});
+
+// TURNOS
+const SH=9,EH=20;
+const MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DOWS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+let ts={step:1,cy:null,cm:null,date:null,slot:null,name:'',bookings:[]};
+(function(){
+  const now=new Date();ts.cy=now.getFullYear();ts.cm=now.getMonth();
+  try{const s=localStorage.getItem('mb2_bk');if(s)ts.bookings=JSON.parse(s);}catch(e){}
+  renderT();
+})();
+function saveT(){try{localStorage.setItem('mb2_bk',JSON.stringify(ts.bookings));}catch(e){}}
+function dstr(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
+function fmtD(ds){const[y,m,d]=ds.split('-');return d+' de '+MONTHS[parseInt(m)-1]+' '+y;}
+function takenFor(ds){return ts.bookings.filter(b=>b.date===ds).map(b=>b.hour);}
+function hasFree(ds){return takenFor(ds).length<(EH-SH);}
+function stepsHtml(cur){
+  return '<div class="steps-bar">'+['Elegir día','Elegir horario','Confirmar'].map(function(l,i){
+    let c=i+1===cur?'active':i+1<cur?'done':'';
+    return`<div class="stp ${c}"><span class="stp-num">${i+1<cur?'✓':i+1}</span>${l}</div>`;
+  }).join('')+'</div>';
+}
+function renderT(){
+  document.getElementById('turnosApp').innerHTML=
+    ts.step===1?renderCal():ts.step===2?renderSlots():ts.step===3?renderForm():renderSuccess();
+  bindT();
+}
+function renderCal(){
+  const y=ts.cy,m=ts.cm;
+  const now=new Date();now.setHours(0,0,0,0);
+  const fd=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
+  let h=stepsHtml(1);
+  h+=`<div class="cal-header"><button class="cal-nav" id="cp">&#8592;</button><span class="cal-month-title">${MONTHS[m]} ${y}</span><button class="cal-nav" id="cn">&#8594;</button></div>`;
+  h+='<div class="cal-grid">';
+  DOWS.forEach(d=>h+=`<div class="cal-dow">${d}</div>`);
+  for(let i=0;i<fd;i++)h+='<div class="cal-day empty"></div>';
+  for(let d=1;d<=dim;d++){
+    const ds=dstr(y,m,d),dt=new Date(y,m,d);
+    const past=dt<now,today=dt.getTime()===now.getTime(),sel=ts.date===ds,free=!past&&hasFree(ds);
+    h+=`<div class="cal-day${past?' past':''}${today?' today':''}${sel?' selected':''}${free?' has-slots':''}" data-d="${ds}">${d}</div>`;
+  }
+  h+='</div><p style="margin-top:1.2rem;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-right:.5rem;vertical-align:middle;"></span>Días con turnos disponibles</p>';
+  return h;
+}
+function renderSlots(){
+  const taken=takenFor(ts.date);
+  let h=stepsHtml(2);
+  h+=`<div class="slots-header"><span class="slots-date">${fmtD(ts.date)}</span><button class="btn-back" id="bk1">&#8592; Volver</button></div><div class="slots-grid">`;
+  for(let hr=SH;hr<EH;hr++){
+    const tk=taken.includes(hr),sel=ts.slot===hr;
+    h+=`<div class="slot${tk?' taken':''}${sel?' selected':''}" data-h="${hr}" data-t="${tk}">${String(hr).padStart(2,'0')}:00</div>`;
+  }
+  h+=`</div><button class="btn-full" id="goForm" ${ts.slot===null?'disabled':''}>Continuar</button>`;
+  return h;
+}
+function renderForm(){
+  let h=stepsHtml(3);
+  h+=`<button class="btn-back" id="bk2" style="margin-bottom:1.5rem;">&#8592; Volver</button>`;
+  h+=`<div class="resumen-box"><div class="res-row"><span class="res-k">Fecha</span><span>${fmtD(ts.date)}</span></div><div class="res-row"><span class="res-k">Horario</span><span>${String(ts.slot).padStart(2,'0')}:00 hs</span></div></div>`;
+  h+=`<label class="form-label">Tu nombre</label><input class="form-input" type="text" id="nameInp" placeholder="Ej: Juan González" value="${ts.name}" maxlength="50"/>`;
+  h+=`<button class="btn-full" id="confirmBtn" ${!ts.name.trim()?'disabled':''}>Confirmar turno</button>`;
+  return h;
+}
+function renderSuccess(){
+  return`<div class="success-wrap"><div class="success-icon">✓</div><div class="success-title">¡Turno confirmado!</div><p class="success-sub">Te esperamos, ${ts.name}.</p><div class="success-detail"><p>Fecha: <strong>${fmtD(ts.date)}</strong></p><p>Horario: <strong>${String(ts.slot).padStart(2,'0')}:00 hs</strong></p><p>Nombre: <strong>${ts.name}</strong></p></div><button class="btn-full" id="newBook">Sacar otro turno</button></div>`;
+}
+function bindT(){
+  const $=id=>document.getElementById(id);
+  if($('cp'))$('cp').onclick=()=>{ts.cm--;if(ts.cm<0){ts.cm=11;ts.cy--;}renderT();};
+  if($('cn'))$('cn').onclick=()=>{ts.cm++;if(ts.cm>11){ts.cm=0;ts.cy++;}renderT();};
+  document.querySelectorAll('.cal-day:not(.empty):not(.past)').forEach(el=>{
+    el.onclick=()=>{if(!hasFree(el.dataset.d))return;ts.date=el.dataset.d;ts.slot=null;ts.step=2;renderT();};
+  });
+  if($('bk1'))$('bk1').onclick=()=>{ts.step=1;renderT();};
+  if($('bk2'))$('bk2').onclick=()=>{ts.step=2;renderT();};
+  document.querySelectorAll('.slot:not(.taken)').forEach(el=>{
+    el.onclick=()=>{ts.slot=parseInt(el.dataset.h);renderT();};
+  });
+  if($('goForm'))$('goForm').onclick=()=>{if(ts.slot!==null){ts.step=3;renderT();}};
+  if($('nameInp')){
+    $('nameInp').oninput=e=>{ts.name=e.target.value;$('confirmBtn').disabled=!ts.name.trim();};
+  }
+  if($('confirmBtn'))$('confirmBtn').onclick=()=>{
+    if(!ts.name.trim())return;
+    ts.bookings.push({date:ts.date,hour:ts.slot,name:ts.name});
+    saveT();ts.step=4;renderT();
+  };
+  if($('newBook'))$('newBook').onclick=()=>{ts.step=1;ts.date=null;ts.slot=null;ts.name='';renderT();};
+}
+
+function openAdmin(){
+  const list=document.getElementById('adminList');
+  if(ts.bookings.length===0){list.innerHTML='<div class="empty-msg">No hay turnos reservados</div>';}
+  else{
+    const sorted=[...ts.bookings].sort((a,b)=>a.date.localeCompare(b.date)||a.hour-b.hour);
+    list.innerHTML=sorted.map(function(b){
+      const ri=ts.bookings.findIndex(x=>x.date===b.date&&x.hour===b.hour&&x.name===b.name);
+      return`<div class="booking-card"><div><strong>${b.name}</strong><p>${fmtD(b.date)} — ${String(b.hour).padStart(2,'0')}:00 hs</p></div><button class="booking-cancel" data-i="${ri}">Cancelar</button></div>`;
+    }).join('');
+    list.querySelectorAll('.booking-cancel').forEach(btn=>{
+      btn.onclick=()=>{ts.bookings.splice(parseInt(btn.dataset.i),1);saveT();openAdmin();renderT();};
+    });
+  }
+  document.getElementById('adminPanel').classList.add('open');
+}
+function closeAdmin(){document.getElementById('adminPanel').classList.remove('open');}
+</script>
+</body>
+</html>
